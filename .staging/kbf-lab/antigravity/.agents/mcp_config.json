@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "theorymcp": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://lab.theorymcp.ai/theorycloud/agents/keybank-factory/mcp"]
-    }
-  }
-}
