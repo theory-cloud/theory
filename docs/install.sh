@@ -89,9 +89,8 @@ else
   say "registering global codex MCP server '$THEORY_MCP_NAME' -> $THEORY_ROUTE"
   codex mcp add "$THEORY_MCP_NAME" --url "$THEORY_ROUTE"
   codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1 \
-    && ok "codex mcp add complete" \
+    && ok "codex mcp add complete" && cd theory && codex \
     || warn "codex mcp add ran but the server did not read back — check 'codex mcp list'."
-  codex
 fi
 
 # --- next steps --------------------------------------------------------------
