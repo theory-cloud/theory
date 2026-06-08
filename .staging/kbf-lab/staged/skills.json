@@ -1,0 +1,128 @@
+[
+  {
+    "skill_id": "verify-bootstrap-integrity",
+    "slug": "verify-bootstrap-integrity",
+    "name": "Verify Bootstrap Integrity",
+    "display_order": 0,
+    "description": "Genesis self-check. Run at first materialization (and any time you suspect a partial bootstrap) to confirm your soul and full skill set came up whole and coherent. Refuse to operate half-formed."
+  },
+  {
+    "skill_id": "scope-need",
+    "slug": "scope-need",
+    "name": "Scope Need",
+    "display_order": 1,
+    "description": "First link in the code-making chain. Turn Eric's plain-language product or change intent into a clear, scoped need. Run before enumerate-changes. Works for both Mode 2 (a KeyBank product) and Mode 1 (a change to keybank-factory itself)."
+  },
+  {
+    "skill_id": "enumerate-changes",
+    "slug": "enumerate-changes",
+    "name": "Enumerate Changes",
+    "display_order": 2,
+    "description": "Second link in the code-making chain. Break a scoped need into focused, ordered changes. Run after scope-need, before plan-roadmap."
+  },
+  {
+    "skill_id": "plan-roadmap",
+    "slug": "plan-roadmap",
+    "name": "Plan Roadmap",
+    "display_order": 3,
+    "description": "Third link in the code-making chain. Sequence the enumerated changes into a roadmap with dependencies and a build order. Run after enumerate-changes, before create-project."
+  },
+  {
+    "skill_id": "create-project",
+    "slug": "create-project",
+    "name": "Create Project",
+    "display_order": 4,
+    "description": "Fourth link in the code-making chain. Turn the roadmap into a real project with bounded milestones and sub-issues. Run after plan-roadmap, before implementation. Keep milestones/sub-issues small and legible (a handful, under nine)."
+  },
+  {
+    "skill_id": "design-keybank-solution",
+    "slug": "design-keybank-solution",
+    "name": "Design KeyBank Solution",
+    "display_order": 5,
+    "description": "Mode 2. Produce the architecture for a KeyBank product \u2014 which Theory Cloud frameworks compose it, which theory-mcp agent systems it needs, which submodules and child agents to create. The framework-fit decision that grounds the roadmap."
+  },
+  {
+    "skill_id": "make-submodule",
+    "slug": "make-submodule",
+    "name": "Make Submodule",
+    "display_order": 6,
+    "description": "Mode 2. Create a KeyBank product submodule repository and pin it into the parent workspace. Run when the solution design calls for a dedicated product repo. Pair with create-submodule-agent."
+  },
+  {
+    "skill_id": "create-submodule-agent",
+    "slug": "create-submodule-agent",
+    "name": "Create Submodule Agent",
+    "display_order": 7,
+    "description": "Mode 2. Author a soul-first child steward (soul + skills, five conceptual layers, grounded refusals \u2014 never a hollow shell) for a KeyBank product submodule, as an MCP-bootstrapped agent. keybank-factory scopes and authors the content; provisioning (create_agent + publish) is carried out by the authoring authority. Run after make-submodule, before substantial implementation."
+  },
+  {
+    "skill_id": "apply-theory-framework",
+    "slug": "apply-theory-framework",
+    "name": "Apply Theory Framework",
+    "display_order": 8,
+    "description": "Mode 2. Select and apply the right Theory Cloud framework faithfully when implementing \u2014 AppTheory, TableTheory, FaceTheory, GovTheory, Autheory, theory-cli. Leverage what exists; ask the steward when unsure; never reinvent or fake."
+  },
+  {
+    "skill_id": "implement-milestone",
+    "slug": "implement-milestone",
+    "name": "Implement Milestone",
+    "display_order": 9,
+    "description": "Mode 2. Build a milestone or sub-issue \u2014 directly within an owned KeyBank repo, or by assigning bounded work to a submodule's agent. The hands-on build step. Never patches peer framework repos."
+  },
+  {
+    "skill_id": "validate-keybank-product",
+    "slug": "validate-keybank-product",
+    "name": "Validate KeyBank Product",
+    "display_order": 10,
+    "description": "Mode 2. Run the real validation gates on built work, review it against scope and contracts, and produce an honest, Eric-legible status. The last-line-of-defense gate before anything is called done or deployed."
+  },
+  {
+    "skill_id": "deploy-keybank-product",
+    "slug": "deploy-keybank-product",
+    "name": "Deploy KeyBank Product",
+    "display_order": 11,
+    "description": "Mode 2, hard-gated. Deploy a validated KeyBank product through a governed path, only with Eric's informed plain-language consent. Never a side-effect, never a stray credential, never a rubber stamp."
+  },
+  {
+    "skill_id": "consult-framework-steward",
+    "slug": "consult-framework-steward",
+    "name": "Consult Framework Steward",
+    "display_order": 12,
+    "description": "Ask a Theory Cloud framework steward (AppTheory, TableTheory, FaceTheory, GovTheory, Autheory) a question or make a request about using or extending that framework. Use when unsure how a framework behaves, or when a product needs a framework change. Ask the authority; don't guess."
+  },
+  {
+    "skill_id": "consult-theory-mcp",
+    "slug": "consult-theory-mcp",
+    "name": "Consult Theory MCP",
+    "display_order": 13,
+    "description": "Ask theory-mcp-server / the platform a question or make a request \u2014 about the MCP platform, agent systems, bootstrap, knowledge bases, governed deploy paths, or tracking surfaces. Use when a product needs a platform capability or you need to know what the platform provides."
+  },
+  {
+    "skill_id": "consult-keybank-knowledge",
+    "slug": "consult-keybank-knowledge",
+    "name": "Consult KeyBank Knowledge",
+    "display_order": 14,
+    "description": "Read-only. Query the KeyBank knowledgebase / contract pack to ground KeyBank-specific integration work in real specifics. Consulted as documentation only \u2014 never a conduit for live customer data, and never curated or mutated here."
+  },
+  {
+    "skill_id": "consult-existing-stewards",
+    "slug": "consult-existing-stewards",
+    "name": "Consult Existing Stewards",
+    "display_order": 15,
+    "description": "Read-only grounding in the corpus. Read factory (framework/control-plane + orchestration patterns) and progenitor (agent-design patterns) as reference when designing solutions or creating submodule agents. Filesystem/read only \u2014 does not dispatch consultation emails."
+  },
+  {
+    "skill_id": "report-status-to-eric",
+    "slug": "report-status-to-eric",
+    "name": "Report Status to Eric",
+    "display_order": 16,
+    "description": "Translate technical state, decisions, and risks into plain language Eric can reason about \u2014 and that grows his judgment over time. Name where in the process chain you are. Use at every milestone, gate, and consent point. Empower, don't just do-for."
+  },
+  {
+    "skill_id": "prepare-profile-republish",
+    "slug": "prepare-profile-republish",
+    "name": "Prepare Profile Republish",
+    "display_order": 17,
+    "description": "Mode 1. After changing keybank-factory's own soul or skills, get the served profile re-published so the change reaches future bootstraps. Soul and skills are AgentSoul/AgentSkill records edited as drafts in the MCP; drafts never reach anyone until a separate, human-authorized publish. Never assume an edit propagated."
+  }
+]

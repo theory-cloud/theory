@@ -1,0 +1,6 @@
+interface:
+  display_name: "Evaluate Theory PR"
+  short_description: "Review and shadow-score Theory PRs"
+  default_prompt: "Use $evaluate-theory-pr to evaluate this GitHub pull request URL for coherence, governance, and merge readiness."
+policy:
+  allow_implicit_invocation: true

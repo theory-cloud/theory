@@ -1,0 +1,26 @@
+# =============================================================
+# Site-wide metadata consumed by layouts/includes.
+# =============================================================
+
+header_nav:
+  - { label: Docs,        url: /,                        active_paths: ["/"] }
+  - { label: How it works, url: /how-it-works/,          active_paths: ["/how-it-works/"] }
+  - { label: Connect,     url: /connect/,                active_paths: ["/connect/"] }
+  - { label: Use,         url: /use/knowledge/,          active_paths: ["/use/"] }
+  - { label: Integrate,   url: /integrate/,              active_paths: ["/integrate/"] }
+  - { label: Author,      url: /author/,                 active_paths: ["/author/"] }
+  - { label: Reference,   url: /reference/tools/,        active_paths: ["/reference/"] }
+
+footer_links:
+  - { label: GitHub,       url: "https://github.com/theory-cloud/theory" }
+  - { label: theorymcp.ai, url: "https://theorymcp.ai/" }
+  - { label: Prompt library, url: "/reference/prompts/" }
+
+# Quick-start cards on the landing page.
+quick_start:
+  - { title: "Connect a host",        desc: "Wire codex, Claude Code, or Antigravity to a namespace route and authenticate.", url: /connect/,                  icon: share }
+  - { title: "Ground before acting",  desc: "Always call describe_interface first — never assume a namespace's tools.",        url: /how-it-works/,             icon: compass }
+  - { title: "Query knowledge",       desc: "search_docs then get_unit — previews first, authoritative detail second.",        url: /use/knowledge/,            icon: database }
+  - { title: "Agent memory",          desc: "Append-only, subject-scoped continuity that survives a change of model.",          url: /use/memory/,               icon: clock }
+  - { title: "Materialize an agent",  desc: "Plan, fetch the pack to disk, verify every checksum, write the marker.",           url: /integrate/materialize/,    icon: layers }
+  - { title: "The prompt library",    desc: "Copy-paste prompts for every step — connect, ground, install, author.",           url: /reference/prompts/,        icon: command }

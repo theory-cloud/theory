@@ -1,0 +1,160 @@
+# =============================================================
+# TheoryMCP · Theory Cloud documentation site
+# Jekyll configuration for GitHub Pages.
+#
+# This is the consumer-facing guide to working with theorymcp.ai
+# namespaces and the agent MCPs they publish. The shared chrome
+# (_layouts / _includes / assets / search.json) is copied verbatim
+# from the Theory Cloud framework sites; only this file, _data/*,
+# index.html, and the content pages are site-specific.
+# =============================================================
+
+title: TheoryMCP
+tagline: Work with theorymcp.ai namespaces and the agent MCPs they publish.
+description: >-
+  The consumer guide to theorymcp.ai. Connect a host to a namespace route,
+  query published knowledge, talk to agent MCPs with persistent scoped memory,
+  materialize an agent into your workspace, and — when you are granted scope —
+  author one back into the namespace. Every step comes with copyable prompts
+  and a plain explanation of how it works. The route is the identity; the
+  namespace is the source of truth.
+
+# Canonical public docs domain. The docs site is served at the theorycloud.ai
+# apex (theorymcp.ai is the platform/MCP route host, referenced throughout the
+# content). Served at the domain root, so generated asset URLs must not carry a
+# repository path as a baseurl.
+url: "https://theorycloud.ai"
+baseurl: ""
+
+# Jekyll engine
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    block:
+      line_numbers: false
+  auto_ids: true
+  toc_levels: 2..4
+  hard_wrap: false
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+plugins:
+  - jekyll-relative-links
+  - jekyll-include-cache
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+relative_links:
+  enabled: true
+  collections: true
+
+include:
+  - assets
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - .jekyll-cache
+  - .jekyll-metadata
+  - _site
+  - node_modules
+  - "README.md"            # repo-internal index; the site landing is index.html
+
+# Apply the default docs layout to every markdown page automatically,
+# so content pages don't need front matter. Surface accent is assigned
+# by section so the chrome recolors as the reader moves through the flow.
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: default
+      surface: core
+      sidebar: true
+      toc: true
+      edit_on_github: true
+  - scope:
+      path: "use"
+    values:
+      surface: core
+  - scope:
+      path: "connect"
+    values:
+      surface: core
+  - scope:
+      path: "integrate"
+    values:
+      surface: mcp
+  - scope:
+      path: "author"
+    values:
+      surface: auth
+  - scope:
+      path: "index.html"
+    values:
+      layout: home
+      sidebar: true
+      toc: false
+      edit_on_github: false
+
+# =============================================================
+# Portable namespace key. The shared layouts/includes read every
+# site parameter from `site.tabletheory.*` — the key is named
+# `tabletheory` on every Theory Cloud site so the chrome can stay
+# byte-identical across frameworks. Do not rename it here.
+# =============================================================
+tabletheory:
+  surface: core                 # core | mcp | auth | journal
+  framework_name: TheoryMCP
+  framework_short: theorymcp
+  repo: theory-cloud/theory
+  repo_branch: main
+  docs_root: docs
+  version_pill: "live"
+  version_status: stable        # stable | prerelease | dev
+  example_route: "https://theorymcp.ai/theorycloud/mcp"
+
+  # Home-page surface tiles — the three things a consumer does with a namespace.
+  surfaces:
+    - id: core
+      name: Use a namespace
+      domain: read-only knowledge surface
+      desc: Connect to a namespace route and query its published knowledge bases — no memory, no materialization, the lowest-friction surface.
+      url: /use/knowledge/
+      cta: Query published knowledge
+    - id: mcp
+      name: Use an agent MCP
+      domain: persistent · scoped memory
+      desc: Talk to a named agent endpoint that keeps subject-scoped memory across sessions and survives a change of model — stateful by design.
+      url: /use/memory/
+      cta: See how memory works
+    - id: auth
+      name: Integrate & author
+      domain: materialize ↔ publish
+      desc: Materialize a published agent into your workspace, verify it against served checksums, keep it in sync — and, when granted scope, author one back.
+      url: /integrate/
+      cta: Integrate an agent
+
+  # At-a-glance stats strip on the landing page.
+  stats:
+    - label: Hosts
+      value: "3"
+      sub: codex · Claude Code · Antigravity
+    - label: The route
+      value: is the identity
+      sub: tenant, scope, entitlement — all server-resolved
+    - label: Source of truth
+      value: the namespace
+      sub: local files are a materialization
+    - label: License
+      value: open
+      sub: this repo is the worked example
+
+# Sitemap defaults
+permalink: pretty
+timezone: UTC

@@ -1,0 +1,21 @@
+{
+  "agent_id": "keybank-factory",
+  "display_name": "KeyBank Factory",
+  "source": {
+    "namespace": "theorycloud",
+    "route": "lab.theorymcp.ai",
+    "published_version": 11,
+    "soul_version": 3,
+    "soul_checksum": "sha256:f8afc8b007379973bcb96d9a33e25b05f40a13905a93fb1967747ecf7498d1b5"
+  },
+  "skill_count": 18,
+  "template_checksums": {
+    "soul": "sha256:26aedc85a90025d3ce2a25314e889c5859ca14611ee0fe88f62b76b03f3902d6",
+    "skill": "sha256:2d8a68430fb029995cc8fc531cfaec596336f8656c05d7adbacb39896a4a1b87",
+    "settings": "sha256:ee4c1b2eb17614f2bf147ae30f0b37e47950c8f93c24c01c27764c5fc0b29525",
+    "outputstyle": "sha256:eeb95c8d4c1a887ab4e4cae9264334b04d612b40ab3c44a856985a4c3c81e0ce",
+    "configtoml": "sha256:58053e10c0492a4910f9fe67f8851c6cb23203db760b42a96275e5b90dfd8fc3",
+    "mcpjson": "sha256:eeb97207beb02b68acff04b1ef554ba99cbd8a60e30897646fd25489ee34ca2d",
+    "mcpconfig": "sha256:3afdc6a6b25aa0365604c0fede3563222173f6ead1da5205c25d76fda6e1d63b"
+  }
+}

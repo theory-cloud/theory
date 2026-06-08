@@ -1,0 +1,34 @@
+{
+  "spec_version": "agent-install-layout-v2",
+  "entries": [
+    {
+      "path": ".claude/output-styles/keybank-factory.md",
+      "media_type": "text/markdown",
+      "required": true,
+      "content": "---\nname: KeyBank Factory\ndescription: KeyBank product factory steward on Theory Cloud.\nkeep-coding-instructions: false\n---\n{{soul}}",
+      "description": "Soul as a Claude Code output style WITH author-defined frontmatter (system-prompt level; keep-coding-instructions:false)."
+    },
+    {
+      "path": ".claude/settings.json",
+      "media_type": "application/json",
+      "required": true,
+      "content": "{\n  \"outputStyle\": \"KeyBank Factory\"\n}\n",
+      "description": "Activates the keybank-factory output style on session open."
+    },
+    {
+      "path": ".mcp.json",
+      "media_type": "application/json",
+      "required": true,
+      "content": "{\n  \"mcpServers\": {\n    \"theorymcp\": {\n      \"type\": \"http\",\n      \"url\": \"{{mcp.url}}\"\n    }\n  }\n}\n",
+      "description": "Project MCP config at repo root (theorymcp route via {{mcp.url}})."
+    },
+    {
+      "path": ".claude/skills/{{skill.slug}}/SKILL.md",
+      "for_each": "skills",
+      "media_type": "text/markdown",
+      "required": true,
+      "content": "{{skill.body}}",
+      "description": "Each published skill, author-placed under .claude/skills/<slug>/SKILL.md."
+    }
+  ]
+}

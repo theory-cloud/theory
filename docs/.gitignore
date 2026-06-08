@@ -1,0 +1,9 @@
+# Jekyll build artifacts — never committed; CI rebuilds from source.
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Bundler local install
+.bundle/
+vendor/

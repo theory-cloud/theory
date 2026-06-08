@@ -1,0 +1,22 @@
+{%- comment -%}
+  Theory-specific captioned figure for the edutainment concept art.
+  Additive include (not part of the shared chrome) so the copied
+  layouts/includes stay byte-identical to the sibling framework sites.
+
+  Usage:
+    {% include figure.html src="/assets/img/edu/stateful-by-design.webp"
+       alt="Stateful by design" caption="Persistent identity, scoped memory, model freedom."
+       max="460" %}
+{%- endcomment -%}
+{%- assign max = include.max | default: "460" -%}
+<figure class="edu-figure" style="margin:26px auto;max-width:{{ max }}px;text-align:center;">
+  <a href="{{ include.src | relative_url }}" target="_blank" rel="noopener" aria-label="Open full-size figure">
+    <img src="{{ include.src | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy"
+         style="width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--tc-outline-variant);box-shadow:0 10px 34px rgba(0,0,0,.38);background:var(--tc-surface-1);">
+  </a>
+  {%- if include.caption -%}
+  <figcaption style="margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--tc-fg-dim);font-family:var(--tc-font-sans);">
+    {{ include.caption }}
+  </figcaption>
+  {%- endif -%}
+</figure>

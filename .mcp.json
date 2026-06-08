@@ -1,0 +1,4 @@
+{"mcpServers":{
+	"theorymcp":{"type":"http","url":"https://theorymcp.ai/theorycloud/mcp"},
+	"theorymcp_lab":{"type":"http","url":"https://lab.theorymcp.ai/theorycloud/mcp"}}
+}

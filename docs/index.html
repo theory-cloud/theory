@@ -1,0 +1,193 @@
+---
+layout: home
+title: Welcome
+description: Work with theorymcp.ai namespaces and the agent MCPs they publish — copyable prompts and plain explanations of how it works.
+sidebar: true
+toc: false
+edit_on_github: false
+---
+
+<section class="hero">
+  <div class="hero__eyebrow">
+    <span class="dot"></span>
+    Theory Cloud · {{ site.tabletheory.framework_name }}
+  </div>
+  <h1>
+    Work with <span class="grad">theorymcp.ai</span> namespaces and agent MCPs.
+  </h1>
+  <p>
+    TheoryMCP is the routed MCP surface behind <code>theorymcp.ai</code>. Connect a host to a
+    namespace, query its published knowledge, talk to agent MCPs that keep scoped memory across
+    sessions, materialize an agent into your workspace — and, when you are granted scope, author one
+    back. <strong>The route is the identity. The namespace is the source of truth.</strong> Every
+    step below comes with a copyable prompt and a plain explanation of how it works.
+  </p>
+  <div class="hero__actions">
+    <a class="btn btn--primary" href="{{ '/getting-started/' | relative_url }}">
+      {% include icon.html name="play" size="14" %}
+      Get started
+    </a>
+    <a class="btn btn--ghost" href="{{ '/how-it-works/' | relative_url }}">
+      {% include icon.html name="compass" size="14" %}
+      How it works
+    </a>
+    <a class="btn btn--ghost" href="{{ '/reference/prompts/' | relative_url }}">
+      {% include icon.html name="command" size="14" %}
+      Prompt library
+    </a>
+    <a class="btn btn--ghost" href="https://github.com/{{ site.tabletheory.repo }}" target="_blank" rel="noopener">
+      {% include icon.html name="github" size="14" %}
+      View on GitHub
+    </a>
+  </div>
+</section>
+
+<!-- =============================================================
+     THREE THINGS YOU DO WITH A NAMESPACE
+     ============================================================= -->
+<div class="section-head">
+  <div>
+    <h2>Three things you do with a namespace</h2>
+    <p>Read its knowledge, talk to its agents, or pull an agent into your own workspace. Pick where you are.</p>
+  </div>
+  <a class="section-head__link" href="{{ '/how-it-works/' | relative_url }}">
+    The mental model {% include icon.html name="chevron-right" size="12" %}
+  </a>
+</div>
+
+<div class="surface-map">
+  {% for s in site.tabletheory.surfaces %}
+    <a class="surface-tile" href="{{ s.url | relative_url }}" data-surface-tile="{{ s.id }}">
+      <div class="surface-tile__head">
+        <span class="surface-tile__name">{{ s.name }}</span>
+        <span class="surface-chip surface-chip--{{ s.id }}">
+          <span class="dot"></span>{{ s.id | upcase }}
+        </span>
+      </div>
+      <div class="surface-tile__domain">{{ s.domain }}</div>
+      <p class="surface-tile__desc">{{ s.desc }}</p>
+      <div class="surface-tile__foot">
+        <span>{{ s.cta | default: "Read more" }}</span>
+        {% include icon.html name="chevron-right" size="12" %}
+      </div>
+    </a>
+  {% endfor %}
+</div>
+
+<!-- =============================================================
+     CONNECT ANY HOST — codex / Claude Code / Antigravity
+     ============================================================= -->
+<div class="runtime-block">
+  <div class="section-head" style="border-bottom: 0; margin-bottom: 8px;">
+    <div>
+      <h2>One identity. Three hosts.</h2>
+      <p>The MCP server id is <code>theorymcp</code> in every host. The route is the only knob — swap in your namespace.</p>
+    </div>
+  </div>
+
+  <div class="runtime-block__head" role="tablist" aria-label="Host">
+    {% for h in site.data.hosts %}
+      <button class="runtime-block__tab {% if forloop.first %}active{% endif %}"
+              data-runtime-tab="{{ h.id }}" role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+        {% include icon.html name=h.icon size="14" %}
+        {{ h.label }}
+      </button>
+    {% endfor %}
+  </div>
+
+  {% for h in site.data.hosts %}
+    <div class="runtime-block__pane" data-runtime-pane="{{ h.id }}" {% unless forloop.first %}hidden{% endunless %}>
+      <p class="tc-body-sm" style="color: var(--tc-fg-dim); font-family: var(--tc-font-mono); margin: 4px 0 10px; font-size: 12px;">
+        {{ h.install }}
+      </p>
+      <pre style="margin:0;padding:14px 16px;background:#0b1426;border:1px solid var(--tc-outline-variant);border-radius:10px;overflow:auto;font-family:var(--tc-font-mono);font-size:12.5px;line-height:1.6;color:#c9d6ec;white-space:pre;">{{ h.snippet | strip | escape }}</pre>
+    </div>
+  {% endfor %}
+
+  <p class="tc-body-sm" style="color: var(--tc-fg-dim); margin: 12px 2px 0; font-size: 12.5px;">
+    Full walkthrough on the <a href="{{ '/connect/' | relative_url }}">Connect a host</a> page. Antigravity needs the
+    <a href="{{ '/connect/mcp-remote-bridge/' | relative_url }}">mcp-remote bridge</a>.
+  </p>
+</div>
+
+<script>
+  // Local host-tab switcher — small enough to inline.
+  (function () {
+    const tabs  = document.querySelectorAll("[data-runtime-tab]");
+    const panes = document.querySelectorAll("[data-runtime-pane]");
+    tabs.forEach((t) => {
+      t.addEventListener("click", () => {
+        const id = t.dataset.runtimeTab;
+        tabs.forEach((b) => {
+          const on = b.dataset.runtimeTab === id;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        panes.forEach((p) => { p.hidden = p.dataset.runtimePane !== id; });
+      });
+    });
+  })();
+</script>
+
+<!-- =============================================================
+     CONCEPT FIGURE
+     ============================================================= -->
+{% include figure.html src="/assets/img/edu/theory-cloud.webp" max="480"
+   alt="Theory Cloud — constrained by design, deterministic by default"
+   caption="Theory Cloud constrains the design space with frameworks; theorymcp.ai adds a layer of persistent, authenticated identity on top. The route resolves who you are and what you may do — server-side." %}
+
+<!-- =============================================================
+     STATS STRIP
+     ============================================================= -->
+<div class="stats-strip" aria-label="At a glance">
+  {% for s in site.tabletheory.stats %}
+    <div class="stats-strip__cell">
+      <div class="stats-strip__label">{{ s.label }}</div>
+      <div class="stats-strip__value">{{ s.value }}</div>
+      <div class="stats-strip__sub">{{ s.sub }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- =============================================================
+     QUICK START GRID
+     ============================================================= -->
+<div class="section-head">
+  <div>
+    <h2>Quick starts</h2>
+    <p>The shortest path from a route to a result — ranked by how often new consumers reach for them.</p>
+  </div>
+  <a class="section-head__link" href="{{ '/getting-started/' | relative_url }}">
+    All guides {% include icon.html name="chevron-right" size="12" %}
+  </a>
+</div>
+
+<div class="qs-grid">
+  {% for q in site.data.site-meta.quick_start %}
+    <a class="qs-card" href="{{ q.url | relative_url }}">
+      <span class="qs-card__icon">{% include icon.html name=q.icon size="14" %}</span>
+      <div class="qs-card__title">{{ q.title }}</div>
+      <p class="qs-card__desc">{{ q.desc }}</p>
+    </a>
+  {% endfor %}
+</div>
+
+<!-- =============================================================
+     CLOSING CALL-OUT BAR
+     ============================================================= -->
+<div class="doc-feedback" style="margin-top: 24px;">
+  <div class="doc-feedback__text">
+    <strong>This repository is the worked example.</strong>
+    It is the canonical Theory Cloud workspace — clone it and it comes up wired to a namespace on
+    codex, Claude Code, or Antigravity, carrying the skills to integrate and author.
+  </div>
+  <div class="doc-feedback__actions">
+    <a class="doc-feedback__btn" href="https://github.com/{{ site.tabletheory.repo }}" target="_blank" rel="noopener">
+      {% include icon.html name="github" size="13" %} View the repo
+    </a>
+    <a class="doc-feedback__btn" href="{{ '/reference/prompts/' | relative_url }}">
+      {% include icon.html name="command" size="13" %} Copyable prompts
+    </a>
+  </div>
+</div>

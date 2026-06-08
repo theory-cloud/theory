@@ -1,0 +1,107 @@
+# =============================================================
+# TheoryMCP docs — sidebar navigation
+# =============================================================
+# Each group has a label and a list of items.
+# Each item:
+#   id     — stable identifier (prev/next + page lookups)
+#   title  — sidebar label
+#   url    — Jekyll-relative URL (prefixed with site.baseurl)
+#   icon   — lucide-style icon id rendered by _includes/icon.html
+#   tag    — optional: new | gated | ref
+#   surface — optional: overrides the page surface accent
+#
+# Adding a page: create the markdown file under docs/, add an entry
+# here, and add its id to `order` + `url_to_id` below.
+# =============================================================
+
+groups:
+  - label: Overview
+    items:
+      - { id: home,             title: Welcome,                url: /,                              icon: home }
+      - { id: how-it-works,     title: How it works,           url: /how-it-works/,                 icon: compass }
+      - { id: getting-started,  title: Getting started,        url: /getting-started/,              icon: play }
+
+  - label: Connect
+    items:
+      - { id: connect-host,     title: Connect a host,         url: /connect/,                      icon: share }
+      - { id: connect-bridge,   title: The mcp-remote bridge,  url: /connect/mcp-remote-bridge/,    icon: repeat }
+
+  - label: Use a namespace
+    items:
+      - { id: use-knowledge,    title: Knowledge & search,     url: /use/knowledge/,                icon: database }
+      - { id: use-agents,       title: Contactable agents,     url: /use/agents/,                   icon: globe }
+
+  - label: Use an agent MCP
+    items:
+      - { id: use-memory,       title: Agent memory,           url: /use/memory/,                   icon: clock,        surface: mcp }
+      - { id: use-mailbox,      title: Mailbox & email,        url: /use/mailbox/,                  icon: file-text,    surface: mcp }
+
+  - label: Integrate
+    items:
+      - { id: integrate,        title: The integration flow,   url: /integrate/,                    icon: package,      surface: mcp, tag: new }
+      - { id: integrate-mat,    title: Materialize an agent,   url: /integrate/materialize/,        icon: layers,       surface: mcp }
+      - { id: integrate-sync,   title: Verify & keep in sync,  url: /integrate/verify-and-sync/,    icon: shield-check, surface: mcp }
+
+  - label: Author (gated)
+    items:
+      - { id: author,           title: Authoring & the gates,  url: /author/,                       icon: lock,         surface: auth, tag: gated }
+      - { id: author-compose,   title: Compose a new agent,    url: /author/compose/,               icon: edit,         surface: auth }
+      - { id: author-publish,   title: Validate & publish,     url: /author/publish/,               icon: tag,          surface: auth }
+      - { id: author-replicate, title: Replicate (lab → live), url: /author/replicate/,             icon: repeat,       surface: auth }
+
+  - label: Reference
+    items:
+      - { id: ref-tools,        title: MCP tool surface,       url: /reference/tools/,              icon: list-checks,  tag: ref }
+      - { id: ref-routes,       title: Route shapes,           url: /reference/routes/,             icon: git-branch }
+      - { id: ref-prompts,      title: Copyable prompt library, url: /reference/prompts/,           icon: command }
+      - { id: ref-glossary,     title: Glossary,               url: /reference/glossary/,           icon: book }
+
+# =============================================================
+# Linear ordering for prev / next pager
+# =============================================================
+order:
+  - home
+  - how-it-works
+  - getting-started
+  - connect-host
+  - connect-bridge
+  - use-knowledge
+  - use-agents
+  - use-memory
+  - use-mailbox
+  - integrate
+  - integrate-mat
+  - integrate-sync
+  - author
+  - author-compose
+  - author-publish
+  - author-replicate
+  - ref-tools
+  - ref-routes
+  - ref-prompts
+  - ref-glossary
+
+# =============================================================
+# URL → page-id map for fast lookups in layouts
+# =============================================================
+url_to_id:
+  /:                                  home
+  /how-it-works/:                     how-it-works
+  /getting-started/:                  getting-started
+  /connect/:                          connect-host
+  /connect/mcp-remote-bridge/:        connect-bridge
+  /use/knowledge/:                    use-knowledge
+  /use/agents/:                       use-agents
+  /use/memory/:                       use-memory
+  /use/mailbox/:                      use-mailbox
+  /integrate/:                        integrate
+  /integrate/materialize/:            integrate-mat
+  /integrate/verify-and-sync/:        integrate-sync
+  /author/:                           author
+  /author/compose/:                   author-compose
+  /author/publish/:                   author-publish
+  /author/replicate/:                 author-replicate
+  /reference/tools/:                  ref-tools
+  /reference/routes/:                 ref-routes
+  /reference/prompts/:                ref-prompts
+  /reference/glossary/:               ref-glossary
