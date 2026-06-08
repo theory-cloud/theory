@@ -95,7 +95,7 @@ cat >&2 <<EOF
     cd $THEORY_DIR
 
   Open the workspace in your host of choice — it comes up as Theory:
-    • codex - three steps
+    • codex - four steps
 	• run 'codex' and close it (it will have a warning about mcp error)	
 	• run 'codex mcp login $THEORY_MCP_NAME'
 	• run 'codex'
