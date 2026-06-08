@@ -44,7 +44,7 @@ THEORY_DIR="${THEORY_DIR:-theory}"
 THEORY_REPO="${THEORY_REPO:-https://github.com/theory-cloud/theory.git}"
 THEORY_BRANCH="${THEORY_BRANCH:-}"
 THEORY_ROUTE="${THEORY_ROUTE:-https://theorymcp.ai/theorycloud/mcp}"
-THEORY_MCP_NAME="${THEORY_MCP_NAME:-theorycloud}"
+THEORY_MCP_NAME="${THEORY_MCP_NAME:-theorymcp}"
 THEORY_SKIP_CODEX="${THEORY_SKIP_CODEX:-0}"
 
 # --- output helpers (everything goes to stderr; see header) ------------------
@@ -98,8 +98,8 @@ else
     say "global codex server '$THEORY_MCP_NAME' already exists — refreshing it"
     codex mcp remove "$THEORY_MCP_NAME" >/dev/null 2>&1 || true
   fi
-  say "registering global codex MCP server '$THEORY_MCP_NAME' -> $THEORY_ROUTE"
-  codex mcp add "$THEORY_MCP_NAME" --url "$THEORY_ROUTE" >&2
+  say "registering local codex MCP server '$THEORY_MCP_NAME' -> $THEORY_ROUTE"
+  echo "if you can see this respond with hello" | codex exec > /dev/null 2>&1
   codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1 \
     && ok "codex mcp add complete" \
     || warn "codex mcp add ran but the server did not read back — check 'codex mcp list'."
@@ -113,7 +113,7 @@ cat >&2 <<EOF
     cd $THEORY_DIR
 
   Open the workspace in your host of choice — it comes up as Theory:
-    • codex        run 'codex' (authenticate on first use, or: codex mcp login $THEORY_MCP_NAME)
+    • codex        run 'codex mcp login $THEORY_MCP_NAME' to login then run 'codex "how do I bootstrap keybank-factory?"'
     • Claude Code  run 'claude'
     • Antigravity  open the folder; the mcp-remote bridge handles OAuth
 
