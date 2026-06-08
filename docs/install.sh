@@ -103,4 +103,6 @@ cat >&2 <<EOF
     • Claude Code  run 'claude'
     • Antigravity  open the folder; the mcp-remote bridge handles OAuth
 
+  To learn more visit https://www.theorycloud.ai/
+
 EOF
