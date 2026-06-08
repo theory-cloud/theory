@@ -28,6 +28,18 @@
 
 set -euo pipefail
 
+# This installer writes ALL of its own output to stderr; its stdout is intentionally
+# empty. That makes `curl ... | bash` work (bash reads the script from stdin) while
+# making the footgun `install.sh | bash` — piping the script's OUTPUT into a shell —
+# a harmless no-op instead of executing log lines as commands.
+#
+# Under `curl ... | bash` the script's stdin is the pipe, not your terminal, so any
+# interactive step (codex's OAuth prompt) would hit EOF. Reconnect stdin to the
+# controlling terminal — but only when one is actually openable. The subshell probe
+# means a host with no controlling terminal (CI, containers) skips this cleanly
+# instead of aborting on an unreadable /dev/tty. Harmless when already interactive.
+if [ ! -t 0 ] && (exec </dev/tty) 2>/dev/null; then exec </dev/tty; fi
+
 THEORY_DIR="${THEORY_DIR:-theory}"
 THEORY_REPO="${THEORY_REPO:-https://github.com/theory-cloud/theory.git}"
 THEORY_BRANCH="${THEORY_BRANCH:-}"
@@ -35,14 +47,14 @@ THEORY_ROUTE="${THEORY_ROUTE:-https://theorymcp.ai/theorycloud/mcp}"
 THEORY_MCP_NAME="${THEORY_MCP_NAME:-theorycloud}"
 THEORY_SKIP_CODEX="${THEORY_SKIP_CODEX:-0}"
 
-# --- output helpers ----------------------------------------------------------
-if [ -t 1 ]; then
+# --- output helpers (everything goes to stderr; see header) ------------------
+if [ -t 2 ]; then
   _b=$'\033[1m'; _g=$'\033[32m'; _y=$'\033[33m'; _r=$'\033[31m'; _x=$'\033[0m'
 else
   _b=''; _g=''; _y=''; _r=''; _x=''
 fi
-say()  { printf '%stheory%s %s\n' "$_b" "$_x" "$*"; }
-ok()   { printf '%s  ✓%s %s\n' "$_g" "$_x" "$*"; }
+say()  { printf '%stheory%s %s\n' "$_b" "$_x" "$*" >&2; }
+ok()   { printf '%s  ✓%s %s\n' "$_g" "$_x" "$*" >&2; }
 warn() { printf '%s  !%s %s\n' "$_y" "$_x" "$*" >&2; }
 die()  { printf '%s  ✗%s %s\n' "$_r" "$_x" "$*" >&2; exit 1; }
 
@@ -87,15 +99,15 @@ else
     codex mcp remove "$THEORY_MCP_NAME" >/dev/null 2>&1 || true
   fi
   say "registering global codex MCP server '$THEORY_MCP_NAME' -> $THEORY_ROUTE"
-  codex mcp add "$THEORY_MCP_NAME" --url "$THEORY_ROUTE"
+  codex mcp add "$THEORY_MCP_NAME" --url "$THEORY_ROUTE" >&2
   codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1 \
-    && ok "codex mcp add complete" && cd theory && codex \
+    && ok "codex mcp add complete" \
     || warn "codex mcp add ran but the server did not read back — check 'codex mcp list'."
 fi
 
 # --- next steps --------------------------------------------------------------
 say "done."
-cat <<EOF
+cat >&2 <<EOF
 
   Next:
     cd $THEORY_DIR

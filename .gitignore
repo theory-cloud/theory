@@ -1,0 +1,9 @@
+# internal staging / scratch — never shipped to consumer clones
+.staging/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

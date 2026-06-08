@@ -24,7 +24,7 @@ Integrity gate. A half-materialized agent that acts is more dangerous than one t
 
 1. Re-read the plan's `manifest_entries`; for each, sha256 the local file and compare. Report any MISSING or MISMATCH.
 2. Confirm the agent's required files are all present: the instructions/soul file at its layout path, every skill, and any config the layout declares.
-3. Confirm the install marker's `published_version` / checksums match the plan's selected snapshot.
+3. Confirm the install marker matches the plan's selected snapshot. The marker lives at the plan's `marker_file_path`; compare the server-defined `installed_state` fields against the plan: `published_version`, `bundle_checksum`, `snapshot_checksum`, `install_manifest_version`.
 4. If anything is missing or inconsistent: **STOP.** Report exactly what is wrong in plain language; re-materialize or escalate. Do not operate.
 
 ## Outputs

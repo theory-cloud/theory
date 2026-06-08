@@ -90,3 +90,8 @@ echo "done:"
 echo "  codex       -> .codex/ (config.toml, steward.md); skills via shared .agents/skills/"
 echo "  claude_code -> .claude/ (output-styles/theory.md, settings.json, skills/) + .mcp.json"
 echo "  antigravity -> GEMINI.md + .agents/ (mcp_config.json, skills/)"
+
+# Self-validate: a render must never leave the workspace incoherent. check.sh is
+# non-mutating and confirms frontmatter/config validity and soul/skill sync.
+echo
+./check.sh

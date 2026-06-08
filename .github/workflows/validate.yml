@@ -1,0 +1,47 @@
+# =============================================================
+# theory · workspace validation gate
+#
+# Runs check.sh on every push to main and every PR. check.sh is the
+# single, non-mutating source of truth for "is this workspace coherent?":
+#   • all SKILL.md frontmatter is valid YAML (name+description, name==slug)
+#   • host configs are well-formed JSON/TOML with required keys
+#   • soul + skill bodies in every host tree are byte-identical to source
+#     (render is in sync; no hand-edited materialized copies)
+#   • no internal scratch (.staging/) is tracked
+#   • shell scripts parse (bash -n + shellcheck)
+#
+# This is the gate that stops a broken-frontmatter skill, a stale render,
+# or tracked scratch from ever reaching a consumer clone again.
+# =============================================================
+
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: check.sh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      # check.sh validates YAML frontmatter with PyYAML and TOML with the
+      # stdlib tomllib (Python 3.11+, present on ubuntu-latest). shellcheck is
+      # preinstalled on the runner and is picked up automatically.
+      - name: Install PyYAML
+        run: python3 -m pip install --break-system-packages --quiet pyyaml
+
+      - name: Validate workspace
+        run: ./check.sh

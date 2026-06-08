@@ -19,7 +19,7 @@ The namespace is the source of truth; local files are a materialization. This sk
 
 ## Inputs
 
-- The local install marker (advisory `installed_state`: published_version + checksums), the `agent_id`, the `client`, and the `target_directory`.
+- The local install marker at the plan's `marker_file_path`, read as advisory `installed_state` (server-defined fields: `published_version`, `bundle_checksum`, `snapshot_checksum`, `install_manifest_version`) — plus the `agent_id`, the `client`, and the `target_directory`.
 
 ## Procedure
 

@@ -30,7 +30,14 @@ The core integration: turn a published agent into local files, faithfully and ve
    - For a host that speaks stdio MCP but cannot perform MCP OAuth (e.g. Antigravity), the route reaches the namespace through the agent layout's `mcp-remote` bridge — see `setup-mcp-bridge`.
 3. **Unzip** into `target_directory`.
 4. **Verify** every extracted file's sha256 against the plan's `manifest_entries`, and the `pack_checksum` against the downloaded zip. The pack materializes **whole or not at all** — never drop files to "shrink" it. *(v2 packs carry no in-zip `MANIFEST.json`; verify against the plan's `manifest_entries`.)*
-5. **Write the install marker** from the plan so future update planning can compare local `installed_state` to the published version.
+5. **Write the install marker** to the **plan-provided `marker_file_path`** — the server names the location; never invent it. Record the server-defined `installed_state` schema so future verify/update planning is deterministic:
+   - `marker_file_path` — where this marker lives (echo it back).
+   - `published_version` — the installed published version.
+   - `bundle_checksum` — checksum of the install pack.
+   - `snapshot_checksum` — checksum of the published snapshot.
+   - `install_manifest_version` — the manifest schema version.
+
+   These are exactly the fields `agent_local_install_plan` accepts back as `installed_state`; passing anything you synthesized yourself defeats deterministic planning.
 
 ## Outputs
 
@@ -43,6 +50,7 @@ The core integration: turn a published agent into local files, faithfully and ve
 - Hunting for a `resources/read` CLI, building an MCP client, or curling the MCP endpoint unauthenticated — use the `download_url` grant or the host's saved resource.
 - Dropping files/skills to reduce size — a partial materialization is a failed one.
 - Synthesizing MCP URLs or identity from caller input — authority is server-owned and arrives already resolved inside the rendered files.
+- Inventing the marker location or schema instead of using the plan's `marker_file_path` and the server-defined `installed_state` fields — the marker is route-derived, not a local convention.
 
 ## After completing
 
