@@ -91,6 +91,7 @@ else
   codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1 \
     && ok "codex mcp add complete" \
     || warn "codex mcp add ran but the server did not read back — check 'codex mcp list'."
+  codex
 fi
 
 # --- next steps --------------------------------------------------------------
