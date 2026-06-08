@@ -98,7 +98,8 @@ cat >&2 <<EOF
     • codex - three steps
 	• run 'codex' and close it (it will have a warning about mcp error)	
 	• run 'codex mcp login $THEORY_MCP_NAME'
-	• run 'codex "how do I bootstrap keybank-factory?"'
+	• run 'codex'
+        • prompt "How do I bootstrap my keybank-factory repository steward?"
     • Claude Code  run 'claude'
     • Antigravity  open the folder; the mcp-remote bridge handles OAuth
 
