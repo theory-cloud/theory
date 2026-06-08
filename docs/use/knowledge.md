@@ -16,16 +16,16 @@ visible, **search** for previews, then **fetch** the authoritative detail.
 | `list_knowledge_bases` | lists the KBs visible on this route (name, display name, description, topics, access tier) | the menu |
 | `search_docs` | finds units in one KB; returns title, summary, snippet, source_ref, citations, relevance | **previews** |
 | `get_unit` | fetches the full authoritative body for a `unit_id` | the source of truth |
-| `recall_units` | deterministic lookup by id / source_ref / facet / adjacency — no ranking | exact retrieval |
+| `recall_units` | deterministic **metadata + adjacency** recall by id / source_ref / facet — no ranking | metadata, *not* the full body |
 
 On agent endpoints the compatibility tool is `query_knowledge` (same idea as `search_docs`, returns
-`doc_id` instead of `unit_id`). Always confirm the real names with `describe_interface` first — the
-exposed surface is route-dependent.
+`doc_id` instead of `unit_id`). Confirm the real names by grounding first — `describe_interface` on a
+namespace route, `server_instructions` on an agent endpoint; the exposed surface is route-dependent.
 
 {% capture preview %}
-`search_docs` returns **previews**, not authoritative text. Don't answer from a snippet — find the
-right unit, then call `get_unit` (or `recall_units`) and answer from the full body. Cite the
-`unit_id` so the answer is traceable.
+`search_docs` returns **previews**, not authoritative text. And `recall_units` returns deterministic
+*metadata + adjacency*, not the body. Don't answer from either — find the right unit, then call
+`get_unit` and answer from its full authoritative body. Cite the `unit_id` so the answer is traceable.
 {% endcapture %}
 {% include callout.html type="warn" title="Previews are not the answer" content=preview %}
 
@@ -49,12 +49,14 @@ with their unit_ids and relevance, then get_unit the strongest one and summarize
 
 ## Deterministic lookup (no ranking)
 
-When you want a specific unit or everything adjacent to one — not a ranked search — use
-`recall_units`:
+When you want a specific unit's metadata or everything adjacent to one — not a ranked search — use
+`recall_units`. It returns deterministic metadata and adjacency; for the authoritative body, follow
+with `get_unit`:
 
 ```text
-In theorycloud, use recall_units to fetch the unit with source_ref "<ref>" (or unit_id "<id>"),
-plus anything it marks as related. Show titles and unit_ids; don't rank, just retrieve.
+In theorycloud, use recall_units to recall the metadata + adjacency for the unit with source_ref
+"<ref>" (or unit_id "<id>") and anything it marks as related. Show titles and unit_ids; don't rank.
+Then get_unit the one I actually want for its full body.
 ```
 
 ## Contract packs

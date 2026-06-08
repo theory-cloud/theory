@@ -68,7 +68,11 @@ continuity across sessions or a named product/domain expert.
 | `memory_append` / `memory_recent` / `memory_get` | — | yes |
 | `email_*` (mailbox) | — | only when enabled |
 | `bootstrap_identity` / published interface | — | only when published |
-| `agent_local_install_plan` (materialize) | — | yes |
+| `agent_local_install_plan` (materialize) | yes — selects a child `agent_id` | — |
+
+Grounding differs by route too: namespace routes expose **`describe_interface`**; agent endpoints
+ground with **`server_instructions`** (plus `bootstrap_identity` when the agent has a published
+interface).
 
 ## The three modes — never bundled
 
@@ -76,7 +80,7 @@ Everything you do falls into one of three modes, and a careful workflow keeps th
 
 1. **Integrate** — configure, discover, materialize, verify, update. *Local* changes; the namespace does not.
 2. **Operate** — use the materialized agents and the namespace's knowledge to do real work. No install happens as a side-effect.
-3. **Author** *(gated)* — push local content *up* into the namespace as drafts, then validate, then publish. Off by default; opened only by an explicit grant; publish is human-authorized **per publish**.
+3. **Author** *(gated)* — push local content *up* into the namespace as drafts, then publish. Off by default; opened only by an explicit grant; the publish is human-authorized **per publish** and validates the drafts as it snapshots them.
 
 A materialization is not a side-effect of operating; operating is not a side-effect of installing;
 an authoring push is not a side-effect of either.

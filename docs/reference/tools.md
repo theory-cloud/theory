@@ -5,19 +5,20 @@ description: The TheoryMCP tools a consumer or agent sees, grouped by job — di
 
 # MCP tool surface
 
-This is a map, not a contract. **The exact tools on any route are server-resolved** — always confirm
-with `describe_interface` first. Names below match the platform's tools; availability depends on
-whether the route is a namespace, an agent, or an authoring-enabled namespace draft route.
+This is a map, not a contract. **The exact tools on any route are server-resolved** — confirm first
+with `describe_interface` on a namespace route, or `server_instructions` on an agent endpoint. Names
+below match the platform's tools; availability depends on whether the route is a namespace, an agent,
+or an authoring-enabled namespace draft route.
 
 ## Discovery & grounding
 
 | Tool | Purpose | Where |
 | --- | --- | --- |
-| `describe_interface` | the tools, KBs, next steps, and convention for this route | namespace · agent |
-| `server_instructions` | the composed route-derived instruction text | namespace · agent |
+| `describe_interface` | the tools, KBs, next steps, and convention for this route | **namespace · partner-namespace only** |
+| `server_instructions` | the composed route-derived instruction text — ground agent endpoints with this | namespace · agent (all routes) |
 | `list_knowledge_bases` | visible knowledge bases (name, display, topics, access tier) | namespace · agent |
-| `bootstrap_identity` | published soul summary, skill list, endpoints | agent (when published) |
-| `list_contactable_agents` | named agents reachable from here | namespace · agent |
+| `bootstrap_identity` | routed identity, published/unpublished state, version, and a published **bundle** descriptor (format, checksum, `bundle_download_url`) — not soul/skill bodies | agent (when published) |
+| `list_contactable_agents` | contactable agents after server-side narrowing — returns `agent_id`, `display_name`, `email_address` only | namespace · agent |
 
 ## Knowledge
 
@@ -26,7 +27,7 @@ whether the route is a namespace, an agent, or an authoring-enabled namespace dr
 | `search_docs` | ranked search in a KB — **previews** (title, summary, snippet, relevance) | namespace |
 | `get_unit` | authoritative full body for a `unit_id` | namespace |
 | `query_knowledge` | agent-endpoint search (like `search_docs`; returns `doc_id`) | agent |
-| `recall_units` | deterministic lookup by id / source_ref / facet / adjacency (no ranking) | namespace |
+| `recall_units` | deterministic **metadata + adjacency** recall by id / source_ref / facet (no ranking) — *not* a full-body `get_unit` replacement | namespace · agent (when configured) |
 
 → How to use them: [Knowledge & search](/use/knowledge/).
 
@@ -45,6 +46,7 @@ whether the route is a namespace, an agent, or an authoring-enabled namespace dr
 | Tool | Purpose |
 | --- | --- |
 | `email_list` · `email_get` · `email_get_content` | list / metadata / full inbound body |
+| `email_mark_read` · `email_mark_unread` | toggle the read state of an inbound item |
 | `email_send` · `email_reply` | send / reply under the agent's mailbox identity |
 | `email_check_recipient` | pre-send recipient policy check |
 
@@ -54,7 +56,7 @@ whether the route is a namespace, an agent, or an authoring-enabled namespace dr
 
 | Tool | Purpose | Where |
 | --- | --- | --- |
-| `agent_local_install_plan` | host-specific install plan + checksummed pack (codex / claude_code / antigravity) | agent |
+| `agent_local_install_plan` | host-specific install plan + checksummed pack (codex / claude_code / antigravity) | **namespace route**, selecting a child `agent_id` |
 
 → How to apply it: [Materialize an agent](/integrate/materialize/).
 
@@ -84,8 +86,8 @@ All draft writes are versioned and attributed; nothing here publishes. → [Comp
 
 | Tool | Purpose |
 | --- | --- |
-| `agent_interface_validate` | mechanical gate — schema, entitlement, layout safety; no side effects |
-| `agent_interface_publish` | the publish gate — **requires `direct_user_authorization=true`** |
+| `agent_interface_publish` | the **publish gate** — validates the drafts, snapshots them; **requires `direct_user_authorization=true`** |
+| `agent_interface_validate` | **post-publish** check — published-only installability for an active child agent + client profile (does not gate or expose drafts) |
 | `agent_interface_status` | draft counts, last published version, installability per client |
 
 ## Snapshots & restore

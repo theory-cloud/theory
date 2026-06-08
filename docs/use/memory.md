@@ -87,6 +87,7 @@ ledger collapses repeats of the same key into one entry, so retries don't duplic
 - **Recall before you act.** Start agent sessions with `memory_recent` so the agent uses what it already knows.
 - **Append the durable, not the disposable.** Preferences, decisions, constraints — not this turn's scratch work.
 - **Let the server own identity.** Don't send subject ids; the token is the identity.
+- **Mind the scope.** Writing memory needs the `memory.append` scope. The agent route's default scope set covers it; if you pin scopes by hand, include `memory.append` or `memory_append` fails closed.
 
 Next: an agent's optional [mailbox & email](/use/mailbox/), or pull the agent's interface into your
 workspace with [Integrate an agent](/integrate/).

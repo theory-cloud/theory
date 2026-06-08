@@ -8,7 +8,7 @@ description: When an agent has a mailbox, how to read inbound mail, fetch full c
 
 Some agent endpoints expose an optional **mailbox**: an inbox-style surface so the agent can receive
 and send email under its own identity. Mailbox tools appear **only when the agent has the mailbox
-enabled** — confirm with `describe_interface` before assuming they exist.
+enabled** — ground with `server_instructions` (it's an agent endpoint) before assuming they exist.
 
 ## The tools
 
@@ -17,6 +17,7 @@ enabled** — confirm with `describe_interface` before assuming they exist.
 | `email_list` | inbox listing — sender, subject, read state, preview | inbound; lightweight |
 | `email_get` | mailbox row metadata + `preview_text` | inbound; lightweight |
 | `email_get_content` | full retained inbound body (`content_text`) | inbound only |
+| `email_mark_read` · `email_mark_unread` | toggle an inbound item's read state | inbound-scoped |
 | `email_send` | send outbound mail with the agent's mailbox identity | subject to allowlist policy |
 | `email_reply` | reply to an inbound item | inbound-scoped |
 | `email_check_recipient` | verify a recipient is allowed before sending | read-only pre-check |
@@ -37,11 +38,11 @@ On the apptheory agent in theorycloud, list unread mailbox items (email_list). F
 sender, subject, and the preview. Tell me which look like they need a reply.
 ```
 
-**Read one in full:**
+**Read one in full (and mark it read):**
 
 ```text
-Open mailbox item <id> on the apptheory agent: fetch its full content with email_get_content
-and summarize what it's asking for.
+Open mailbox item <id> on the apptheory agent: fetch its full content with email_get_content,
+summarize what it's asking for, then mark it read with email_mark_read.
 ```
 
 **Reply safely:**

@@ -37,6 +37,14 @@ whether agent installs are available, and the route-derived identity. Use only t
 names describe_interface returns.
 ```
 
+**Ground an agent endpoint** (agents don't expose `describe_interface`)
+
+```text
+Ground me on the agent endpoint https://theorymcp.ai/theorycloud/agents/apptheory/mcp.
+Call server_instructions (and bootstrap_identity if the agent has a published interface) and
+summarize who this agent is, what it exposes (knowledge, memory, mailbox), and its identity.
+```
+
 ## Use a namespace
 
 **Query knowledge (search → detail)** → [Knowledge & search](/use/knowledge/)
@@ -51,16 +59,18 @@ and answer my question from the authoritative body. Cite the unit_id(s) you used
 **Deterministic lookup (no ranking)**
 
 ```text
-In theorycloud, use recall_units to fetch the unit with source_ref "<ref>" (or unit_id "<id>"),
-plus anything it marks as related. Show titles and unit_ids; don't rank, just retrieve.
+In theorycloud, use recall_units to recall the metadata + adjacency for the unit with source_ref
+"<ref>" (or unit_id "<id>") and anything it marks as related. Show titles and unit_ids; don't rank.
+Then get_unit the one I actually want for its full authoritative body.
 ```
 
 **Discover agents** → [Contactable agents](/use/agents/)
 
 ```text
-In the theorycloud namespace, list the contactable agents (list_contactable_agents). For each,
-show its agent_id, what it's a steward of, and its endpoint route. Recommend which one fits
-"<what I'm trying to do>".
+In the theorycloud namespace, list the contactable agents (list_contactable_agents). It returns each
+agent's agent_id, display_name, and email_address — show those, infer the steward role from the
+display name and the route from the agent_id (/theorycloud/agents/<agent_id>/mcp), and recommend
+which fits "<what I'm trying to do>".
 ```
 
 ## Use an agent MCP
@@ -168,21 +178,22 @@ the soul already exists. For each skill include a clear When-to-use and When-NOT
 DRAFTS. List the slugs you wrote.
 ```
 
-**Validate** → [Validate & publish](/author/publish/)
+**Publish (human-authorized; validates the drafts)** → [Validate & publish](/author/publish/)
 
 ```text
-Validate the draft interface for <new-agent-id> in theorycloud with agent_interface_validate.
-Show me the full result. If it fails, list each error with its code and what to change; don't
-attempt to publish. If it passes, stop and wait — publishing is a separate, authorized step.
+Publish <new-agent-id> in theorycloud. Call agent_interface_publish with
+direct_user_authorization=true ONLY after I explicitly say "publish now". It validates the drafts
+and creates the snapshot; if drafts are incomplete it fails closed — show me that error rather than
+forcing it. Report the new published_version. Do not infer authorization from the earlier scope grant.
 ```
 
-**Publish (human-authorized)**
+**Verify installability (after publishing)**
 
 ```text
-Publish <new-agent-id> in theorycloud. First confirm agent_interface_validate currently passes
-(re-run it). Then call agent_interface_publish with direct_user_authorization=true ONLY after I
-explicitly say "publish now". Report the new published_version. Do not infer authorization from
-the earlier scope grant.
+Confirm <new-agent-id> is installable in theorycloud: call agent_interface_status for the latest
+published version, then agent_interface_validate for each host profile I care about. Report whether
+the published snapshot installs cleanly per client, and list any incomplete checks. (These are
+post-publish checks — they don't gate or expose drafts.)
 ```
 
 **Replicate (lab → live)** → [Replicate](/author/replicate/)
@@ -191,7 +202,8 @@ the earlier scope grant.
 Replicate these agents from theorycloud on lab.theorymcp.ai into theorycloud on
 theorymcp.ai, verbatim: apptheory, tabletheory
 For each, in order: read the source's published soul/skills/ADL layouts, stage them locally,
-re-upsert them UNCHANGED into the target (soul first, then skills, then layouts), validate, and
-publish with direct_user_authorization=true — one explicit authorization per agent. Do not edit
-any soul or skill in transit. Stop and report if a validate fails.
+re-upsert them UNCHANGED into the target (soul first, then skills, then layouts), then publish with
+direct_user_authorization=true (publish validates the drafts and snapshots them), then confirm
+installability with agent_interface_validate/status — one explicit authorization per agent. Do not
+edit any soul or skill in transit. Stop and report if a publish fails closed on incomplete drafts.
 ```

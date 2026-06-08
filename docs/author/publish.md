@@ -1,59 +1,58 @@
 ---
 title: Validate & publish
-description: The two-gate terminal step — a passing agent_interface_validate plus a per-publish human authorization — the only path for drafts to become installable.
+description: Publishing is one human-authorized gate — agent_interface_publish validates the drafts and snapshots them. agent_interface_validate is a separate, post-publish installability check.
 ---
 
 # Validate & publish
 
-Drafts are invisible to consumers. They become installable only by crossing **two gates**: a
-mechanical validation and a human authorization. Neither is optional, and they are never bundled into
-one unattended step.
+Drafts are invisible to consumers. They become installable through **one server-side mutation gate**
+— a human-authorized publish — and you confirm the result with a published-installability check.
+There is no separate "pre-publish draft validate" tool: validation happens *inside* publish.
 
-## Gate 1 — Validate (mechanical)
+## The publish gate
 
-`agent_interface_validate` checks every draft for publishability and has **no side effects**:
+`agent_interface_publish` is the single gate that turns drafts into something installable. It:
 
-- schema correctness across soul, skills, instructions, layouts;
-- entitlement checks for the route;
-- content limits (e.g. the soul has a size cap);
-- install-layout safety — only known placeholders, **no authority fields**;
-- per-profile installability pre-checks.
-
-It returns precise error codes and retryable hints. If you change any draft afterward, you must
-re-validate — a stale pass doesn't count.
+- **validates the drafts internally** and **fails closed** if the soul, skills, or layouts are incomplete;
+- creates a new **immutable snapshot** from those validated drafts;
+- **requires `direct_user_authorization=true`** for that specific publish — draft writes never invoke it implicitly.
 
 ```text
-Validate the draft interface for <new-agent-id> in theorycloud with agent_interface_validate.
-Show me the full result. If it fails, list each error with its code and what to change; don't
-attempt to publish. If it passes, stop and wait — publishing is a separate, authorized step.
-```
-
-## Gate 2 — Publish (human)
-
-`agent_interface_publish` creates the **immutable snapshot** from the validated drafts and
-**requires `direct_user_authorization=true`** for that specific publish. The earlier scope grant is
-*not* this authorization.
-
-```text
-Publish <new-agent-id> in theorycloud. First confirm agent_interface_validate currently passes
-(re-run it). Then call agent_interface_publish with direct_user_authorization=true ONLY after I
-explicitly say "publish now". Report the new published_version. Do not infer authorization from
-the earlier scope grant.
+Publish <new-agent-id> in theorycloud. Call agent_interface_publish with
+direct_user_authorization=true ONLY after I explicitly say "publish now". It validates the drafts
+and creates the snapshot; if the drafts are incomplete it fails closed — show me that error rather
+than trying to force it. Report the new published_version.
 ```
 
 {% capture gates %}
-"Validate passed earlier and we already granted scope, so just publish" is the failure to refuse.
-Publish needs a **fresh** passing validate **and** its own per-publish authorization. The scope grant
-opened drafting; it is never standing publish authority.
+"We already granted scope, so just publish" is the failure to refuse. Authoring scope is a workspace
+discipline that opened drafting; it is **not** publish authorization. Every publish needs its own
+`direct_user_authorization=true`, and the grant and the publish are never bundled into one unattended
+step.
 {% endcapture %}
-{% include callout.html type="danger" title="Two gates, every time" content=gates %}
+{% include callout.html type="danger" title="Authorization is per publish" content=gates %}
+
+## Verify installability — after publishing
+
+`agent_interface_validate` is a **post-publish** check, not a draft gate. It validates *published-only*
+installability for an **active child agent** and a selected **client profile** — incomplete snapshot,
+identity, skills, manifest, and client-support checks — without exposing draft state. Pair it with
+`agent_interface_status`:
+
+- `agent_interface_validate` — does the *published* agent install cleanly for `codex` / `claude_code` / `antigravity`?
+- `agent_interface_status` — draft counts, last published version, and installability per client.
+
+```text
+Confirm <new-agent-id> is installable in theorycloud: call agent_interface_status for the latest
+published version, then agent_interface_validate for each host profile I care about. Report whether
+the published snapshot installs cleanly per client, and list any incomplete checks.
+```
 
 ## Snapshots are immutable and append-only
 
 Every publish increments `published_version` and writes a snapshot you cannot edit in place. You
 never "overwrite" or silently roll back. Read tools let you inspect history:
 
-- `agent_interface_status` — draft counts, last published version, installability per client;
 - `agent_interface_snapshot_list` / `_get` — browse and fetch published versions;
 - `agent_interface_snapshot_diff` — structural diff between two versions.
 
@@ -69,7 +68,8 @@ publish again:
 ```text
 Roll <new-agent-id> in theorycloud back to published_version <N>: restore_from_snapshot it into drafts
 (with my authorization), show me the restored drafts and a diff against current, then — only on my
-explicit go-ahead — validate and publish as a new version. Never edit a snapshot in place.
+explicit go-ahead — publish as a new version with direct_user_authorization=true. Never edit a
+snapshot in place.
 ```
 
 ## Close the loop (optional)

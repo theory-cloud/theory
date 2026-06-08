@@ -39,7 +39,7 @@ stop, not a warning to work around.
 The namespace republishes; your local copy drifts behind. Updating reconciles them:
 
 1. read the local install **marker** as advisory `installed_state`;
-2. ask `agent_local_install_plan` whether a newer published version exists for your client;
+2. ask `agent_local_install_plan` (on the **namespace route**, naming the child `agent_id`) whether a newer published version exists for your client;
 3. if so, **re-materialize only what changed** — same plan → fetch → verify → marker loop;
 4. if not, you're current — do nothing.
 

@@ -49,7 +49,7 @@ scopes         = ["mcp:tools", "ai.kb.query"]
 
 ## Step 2 — Authenticate
 
-- **codex:** `codex mcp login https://theorymcp.ai/theorycloud/mcp` — completes browser OAuth natively.
+- **codex:** `codex mcp login theorymcp` (the configured server name) — completes browser OAuth natively.
 - **Claude Code:** open `/mcp`, choose `theorymcp`, authenticate in the browser.
 - **Antigravity:** the first connection opens a browser once; the [mcp-remote bridge](/connect/mcp-remote-bridge/) holds the token afterward.
 

@@ -27,11 +27,20 @@ oauth_resource = "https://theorymcp.ai/theorycloud/mcp"
 scopes         = ["mcp:tools", "ai.kb.query"]
 ```
 
-Then authenticate (a browser window opens for you to approve):
+Then authenticate (a browser window opens for you to approve). `codex mcp login` takes the
+**configured server name**, not the URL:
 
 ```text
-codex mcp login https://theorymcp.ai/theorycloud/mcp
+codex mcp login theorymcp
 ```
+
+{% capture scopes %}
+The `scopes` above (`mcp:tools`, `ai.kb.query`) cover namespace tools and knowledge queries. If you
+pin scopes by hand for an **agent endpoint** and want the agent to write memory, also include
+`memory.append` — otherwise `memory_append` calls fail closed. On routes where scopes aren't pinned
+manually, the route's default scope set already covers this.
+{% endcapture %}
+{% include callout.html type="info" title="Scopes for agent memory" content=scopes %}
 
 ## Claude Code
 

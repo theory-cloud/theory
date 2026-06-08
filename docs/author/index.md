@@ -1,6 +1,6 @@
 ---
 title: Authoring & the gates
-description: Pushing local content up into a namespace is a gated practice — off by default, opened by an explicit scope grant, and published only through two gates.
+description: Pushing local content up into a namespace is a gated practice — off by default, opened by an explicit scope grant (a workspace discipline), and published only through a human-authorized publish that validates the drafts.
 ---
 
 # Authoring & the gates
@@ -10,9 +10,11 @@ drafts, then publishes it so others can install it. Because it mutates the sourc
 **off by default** and wrapped in deliberate gates.
 
 {% capture gated %}
-Reading and installing from a namespace are **not** the same as writing to it. The mere presence of
-authoring tools on a route is **not** a grant. Authoring opens only when the operator explicitly
-grants scope — and a scope grant opens the **draft** surface, never standing publish authority.
+Reading and installing from a namespace are **not** the same as writing to it. Authoring scope is a
+**workspace discipline** — a deliberate operator opt-in — not a server-side scope claim. The server's
+own gates are what actually hold: draft tools are exposed only on permitted namespace routes, and
+publishing requires `direct_user_authorization=true`. The scope grant opens the **draft** surface;
+it is never standing publish authority.
 {% endcapture %}
 {% include callout.html type="warn" title="Authoring is opt-in" content=gated %}
 
@@ -22,20 +24,24 @@ grants scope — and a scope grant opens the **draft** surface, never standing p
 | --- | --- | --- |
 | direction | namespace → local | local → namespace |
 | default | on | **off** |
-| opens via | just connecting | an explicit **scope grant**, re-confirmed each session |
-| reaches "published" via | n/a (you only read) | a passing **validate** + a per-publish **human authorization** |
+| opens via | just connecting | an explicit **scope grant** (workspace discipline), re-confirmed each session |
+| reaches "published" via | n/a (you only read) | a per-publish **human-authorized publish** that validates the drafts |
 
 ## The gates
 
-1. **Scope grant** *(opens the door)* — a deliberate, session-scoped opt-in that flips this
+1. **Scope grant** *(workspace discipline)* — a deliberate, session-scoped opt-in that flips this
    workspace from pull-only to author-capable for the connected namespace. It is re-confirmed each
-   session and never persisted as standing authority.
-2. **Validate** *(mechanical gate)* — `agent_interface_validate` checks every draft for
-   publishability: schema, entitlements, content limits, and install-layout safety. Read-only, no
-   side effects.
-3. **Publish** *(human gate)* — `agent_interface_publish` creates the immutable snapshot, and
-   **requires `direct_user_authorization=true`** for that specific publish. The scope grant is not
-   this authorization; validate and publish are never bundled into one unattended step.
+   session and never persisted as standing authority. It is *your* discipline, not a server-side
+   scope — the server gates are below.
+2. **Publish** *(the server gate)* — `agent_interface_publish` is the single mutation gate. It
+   **validates the drafts internally** (failing closed if they're incomplete), creates the immutable
+   snapshot, and **requires `direct_user_authorization=true`** for that specific publish. There is no
+   separate pre-publish draft-validate tool; the scope grant is not this authorization, and the two
+   are never bundled into one unattended step.
+3. **Verify installability** *(after publishing)* — `agent_interface_validate` runs *published-only*
+   installability checks for an active child agent + client profile, and `agent_interface_status`
+   reports installability per host. Use them to confirm the published agent installs cleanly — they
+   do not gate or expose drafts.
 
 ## The authoring flow, front to back
 
@@ -45,7 +51,8 @@ scope-agent-lite          one conversation: purpose, principal, hosts, invariant
 author-soul               create_agent + agent_soul_upsert — identity exists BEFORE any skill
 author-skills             agent_skill_upsert per skill — tools follow identity
 define-install-layout     agent_install_layout_upsert per host — the namespace renders the hosts
-validate-and-publish      agent_interface_validate, then agent_interface_publish (human-authorized)
+validate-and-publish      agent_interface_publish (human-authorized; validates drafts + snapshots),
+                          then agent_interface_validate / agent_interface_status to confirm install
 ```
 
 **Soul before skills before layouts** isn't advice — it's the order the namespace enforces. A skill

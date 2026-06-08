@@ -11,7 +11,9 @@ Nothing here is improvised — the layout is author-defined and route-derived, a
 
 ## The one tool
 
-`agent_local_install_plan(agent_id, client, target_directory)` returns:
+`agent_local_install_plan(agent_id, client, target_directory)` is called on the **namespace route**
+(`https://theorymcp.ai/<namespace>/mcp`) — you pass the child `agent_id` you want; it is not a tool on
+the agent endpoint. It returns:
 
 - **`manifest_entries`** — every file, each with its `path` and `sha256`;
 - **`install_pack_resource`** — how to get the bytes: a one-time `download_url` and/or `read_method: resources/read`, plus a `pack_checksum`;

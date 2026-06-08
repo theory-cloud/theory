@@ -14,17 +14,21 @@ durable expert you can come back to, not a throwaway chat.
 From the namespace route:
 
 ```text
-In the theorycloud namespace, list the contactable agents (list_contactable_agents). For each,
-show its agent_id, what it's a steward of, and its endpoint route. Recommend which one fits
-"<what I'm trying to do>".
+In the theorycloud namespace, list the contactable agents (list_contactable_agents). It returns each
+agent's agent_id, display_name, and email_address — show those, infer each one's steward role from
+its display name and its route from the agent_id (/theorycloud/agents/<agent_id>/mcp), and recommend
+which fits "<what I'm trying to do>".
 ```
 
-You can also ask an agent to describe itself. Agent endpoints expose `describe_interface` and often
-`bootstrap_identity` (a published summary of the agent's soul, skill list, and endpoints):
+You can also ask an agent to describe itself. Agent endpoints ground with `server_instructions`
+(`describe_interface` is a namespace/partner-namespace tool, not an agent one), plus
+`bootstrap_identity` when the agent has a published interface — that returns the agent's routed
+identity, published/unpublished state, version, and a published **bundle descriptor** (download
+hints), not the soul or skill bodies:
 
 ```text
-Connect to https://theorymcp.ai/theorycloud/agents/apptheory/mcp and call describe_interface
-(and bootstrap_identity if present). Summarize who this agent is, what skills it has, and what
+Connect to https://theorymcp.ai/theorycloud/agents/apptheory/mcp and call server_instructions
+(and bootstrap_identity if present). Summarize who this agent is, what it's published, and what
 tools it exposes.
 ```
 
@@ -59,7 +63,7 @@ agent a dependable collaborator rather than a stateless tool call.
 
 ```text
 I want to work with the apptheory steward in theorycloud. Connect to its agent endpoint,
-ground with describe_interface, tell me what it can do (knowledge, memory, mailbox, installable
+ground with server_instructions, tell me what it can do (knowledge, memory, mailbox, installable
 interface), and recall my recent memory with it if any exists. Then help me with: <task>.
 ```
 

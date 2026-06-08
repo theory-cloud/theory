@@ -17,7 +17,7 @@ keeps every gate, applied per agent.
 | interview | yes (`scope-agent-lite`) | **no** — there's nothing to shape |
 | what it writes | a new, distinct identity | the **same** published identity, unchanged |
 | scope | one new agent | a **bounded, explicitly authorized set** (source → target, named ids) |
-| gates | grant · soul-first · validate · publish | grant · soul-first · validate · publish **(per agent)** |
+| gates | grant · soul-first · authorized publish · verify | grant · soul-first · authorized publish · verify **(per agent)** |
 
 ## The flow
 
@@ -26,23 +26,25 @@ For each agent in the authorized set:
 1. **Read** the source agent's published soul, skills, and ADL v2 layouts from the source namespace;
 2. **Stage** them locally (the same caller-writes-files discipline);
 3. **Re-upsert** them **unchanged** into the target — soul first, then skills, then layouts;
-4. **Validate** the target drafts (`agent_interface_validate`);
-5. **Publish** with `direct_user_authorization=true` — its own authorization, per agent.
+4. **Publish** with `direct_user_authorization=true` — the publish validates the drafts and snapshots them, under its own authorization, per agent;
+5. **Verify installability** on the target (`agent_interface_validate` / `agent_interface_status`).
 
 ```text
 Replicate these agents from theorycloud on lab.theorymcp.ai into theorycloud on
 theorymcp.ai, verbatim: apptheory, tabletheory
 For each, in order: read the source's published soul/skills/ADL layouts, stage them locally,
-re-upsert them UNCHANGED into the target (soul first, then skills, then layouts), validate, and
-publish with direct_user_authorization=true — one explicit authorization per agent. Do not edit
-any soul or skill in transit. Stop and report if a validate fails.
+re-upsert them UNCHANGED into the target (soul first, then skills, then layouts), then publish with
+direct_user_authorization=true (publish validates the drafts and snapshots them), then confirm
+installability with agent_interface_validate/status — one explicit authorization per agent. Do not
+edit any soul or skill in transit. Stop and report if a publish fails closed on incomplete drafts.
 ```
 
 {% capture verbatim %}
 Replication is a **verbatim** copy under an explicit, bounded authorization. It is **never** a
 license to edit the soul or skills in transit (that would be a separate, deliberate authoring
 change), and **never** a way to bulk-publish around per-publish human authorization. Each replicated
-agent passes a fresh validate and its own authorized publish, soul-first.
+agent is published under its own `direct_user_authorization` (which validates its drafts) and
+verified installable, soul-first.
 {% endcapture %}
 {% include callout.html type="danger" title="Verbatim, gated, per agent" content=verbatim %}
 
@@ -51,7 +53,7 @@ agent passes a fresh validate and its own authorized publish, soul-first.
 Bundling a "read from source" and a "publish to target" into one unattended sweep is exactly what the
 gates exist to prevent. Replication keeps the **pull** and the **push** explicit and per-agent, so
 "the namespace is the source of truth" holds in both namespaces at once: you copy what source
-*published*, and target only reaches *published* through its own two gates.
+*published*, and target only reaches *published* through its own authorized publish.
 
 ## Open the mode for replication
 

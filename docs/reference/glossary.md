@@ -91,14 +91,16 @@ first use; mint a fresh plan if a download fails.
 **Published snapshot** — the immutable, append-only result of a publish; identified by an
 auto-incrementing `published_version`.
 
-**Validate** — `agent_interface_validate`, the mechanical gate (schema, entitlement, layout safety);
-no side effects.
+**Publish** — `agent_interface_publish`, the single server-side gate; it **validates the drafts** and
+snapshots them, and requires `direct_user_authorization=true` **per publish**.
 
-**Publish** — `agent_interface_publish`, the human gate; requires `direct_user_authorization=true`
-**per publish**.
+**Validate** — `agent_interface_validate`, a **post-publish** check of *published-only* installability
+for an active child agent + client profile. It does not gate or expose drafts. Pair with
+`agent_interface_status`.
 
-**Authoring scope** — the deliberate, session-scoped grant that opens the **draft** surface; never
-standing publish authority. → [Authoring & the gates](/author/)
+**Authoring scope** — the deliberate, session-scoped grant that opens the **draft** surface; a
+**workspace discipline**, not a server-side scope claim, and never standing publish authority. →
+[Authoring & the gates](/author/)
 
 **Replication** — a verbatim copy of an existing published agent into another namespace; composes
 nothing, keeps every gate. → [Replicate](/author/replicate/)
