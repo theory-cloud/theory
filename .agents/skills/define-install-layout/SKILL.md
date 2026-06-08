@@ -1,6 +1,6 @@
 ---
 name: define-install-layout
-description: Author the ADL v2 install layout(s) so the namespace can render the agent onto codex / claude_code / antigravity, via agent_install_layout_upsert. Theory authors entries[] of logic-less mustache templates (never rendered bytes) and the namespace renders the host forms server-side — no hand-scaffolding of .codex/.claude/.agents. Front-loads the two server rejection causes: unknown placeholders and authority fields baked into content.
+description: "Author the ADL v2 install layout(s) so the namespace can render the agent onto codex / claude_code / antigravity, via agent_install_layout_upsert. Theory authors entries[] of logic-less mustache templates (never rendered bytes) and the namespace renders the host forms server-side — no hand-scaffolding of .codex/.claude/.agents. Front-loads the two server rejection causes: unknown placeholders and authority fields baked into content."
 ---
 
 # Define the install layout(s)

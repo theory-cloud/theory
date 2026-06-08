@@ -1,6 +1,6 @@
 ---
 name: scope-agent-lite
-description: The single collapsed reversal-point interview — one short conversation that folds progenitor's scope-agent + enumerate-patterns + design-agent into a confirmed agent SHAPE the operator approves BEFORE any namespace write. Keeps the soul-first guarantee lightweight but non-skippable: purpose, principal, target host profiles, invariants, and at least three concrete invariant-grounded refusals. Detects when the work exceeds the get-started on-ramp and points to graduating.
+description: "The single collapsed reversal-point interview — one short conversation that folds progenitor's scope-agent + enumerate-patterns + design-agent into a confirmed agent SHAPE the operator approves BEFORE any namespace write. Keeps the soul-first guarantee lightweight but non-skippable: purpose, principal, target host profiles, invariants, and at least three concrete invariant-grounded refusals. Detects when the work exceeds the get-started on-ramp and points to graduating."
 ---
 
 # Scope the agent (lite)
