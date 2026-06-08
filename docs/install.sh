@@ -86,24 +86,6 @@ if [ ! -f SOUL.md ] || [ ! -f .codex/config.toml ]; then
 fi
 ok "workspace ready in $(pwd)"
 
-# --- register the namespace as a GLOBAL codex MCP server ---------------------
-if [ "$THEORY_SKIP_CODEX" = "1" ]; then
-  warn "THEORY_SKIP_CODEX=1 — skipping 'codex mcp add'."
-elif ! command -v codex >/dev/null 2>&1; then
-  warn "codex CLI not found on PATH — skipping the global MCP registration."
-  warn "once codex is installed, run:"
-  warn "    codex mcp add $THEORY_MCP_NAME --url $THEORY_ROUTE"
-else
-  if codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1; then
-    say "global codex server '$THEORY_MCP_NAME' already exists — refreshing it"
-    codex mcp remove "$THEORY_MCP_NAME" >/dev/null 2>&1 || true
-  fi
-  say "registering local codex MCP server '$THEORY_MCP_NAME' -> $THEORY_ROUTE"
-  echo "if you can see this respond with hello" | codex exec > /dev/null 2>&1
-  codex mcp get "$THEORY_MCP_NAME" >/dev/null 2>&1 \
-    && ok "codex mcp add complete" \
-    || warn "codex mcp add ran but the server did not read back — check 'codex mcp list'."
-fi
 
 # --- next steps --------------------------------------------------------------
 say "done."
@@ -113,7 +95,10 @@ cat >&2 <<EOF
     cd $THEORY_DIR
 
   Open the workspace in your host of choice — it comes up as Theory:
-    • codex        run 'codex mcp login $THEORY_MCP_NAME' to login then run 'codex "how do I bootstrap keybank-factory?"'
+    • codex - three steps
+	• run 'codex' and close it (it will have a warning about mcp error)	
+	• run 'codex mcp login $THEORY_MCP_NAME'
+	• run 'codex "how do I bootstrap keybank-factory?"'
     • Claude Code  run 'claude'
     • Antigravity  open the folder; the mcp-remote bridge handles OAuth
 
